@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulk Product Upload — Iqbal Fashion Admin</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="images/logo.jpg" type="image/jpeg">
+  <link rel="icon" href="images/logo.png?v=3" type="image/jpeg">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -54,7 +54,7 @@
   <header class="admin-header">
     <div class="header-left">
       <button class="menu-trigger-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-      <div class="brand-logo"><img src="images/logo.png" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;"><span class="admin-pill" style="background:rgba(212,175,55,0.15);color:#D4AF37;border:1px solid rgba(212,175,55,0.4);font-size:10px;font-weight:800;letter-spacing:1.5px;padding:3px 8px;border-radius:4px;text-transform:uppercase;">ADMIN</span></div>
+      <div class="brand-logo"><img src="images/logo.png?v=3" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;"><span class="admin-pill" style="background:rgba(212,175,55,0.15);color:#D4AF37;border:1px solid rgba(212,175,55,0.4);font-size:10px;font-weight:800;letter-spacing:1.5px;padding:3px 8px;border-radius:4px;text-transform:uppercase;">ADMIN</span></div>
     </div>
   </header>
 
@@ -184,7 +184,7 @@
     <div class="drawer-left" onclick="event.stopPropagation()">
       <div class="drawer-header">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="images/logo.jpg" alt="Logo" style="height: 28px; width: auto; border-radius: 4px;" />
+          <img src="images/logo.png?v=3" alt="Logo" style="height: 28px; width: auto; border-radius: 4px;" />
           <span class="drawer-title">ADMIN MENU</span>
         </div>
         <button class="drawer-close-btn" onclick="closeDrawer()">×</button>
@@ -471,7 +471,7 @@
         try {
           // Upload Image to Supabase Storage
           const imageUrl = await window.uploadFileToStorage(item.file, 'product-images', 'products');
-          const finalImage = imageUrl || 'images/logo.jpg';
+          const finalImage = imageUrl || 'images/logo.png?v=3';
 
           const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.floor(1000 + Math.random() * 9000);
 
