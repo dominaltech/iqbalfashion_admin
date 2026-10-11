@@ -73,6 +73,26 @@
         </form>
       </div>
 
+      <!-- 1.5 READYMADE APPAREL SIZES CARD -->
+      <div class="stat-card" style="padding:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div>
+            <h2 style="font-size:1.1rem; font-weight:900;">Readymade Apparel Sizes</h2>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Garment sizes (32 to 46, XS to 3XL) for shirts, kurtas, jackets &amp; kids</p>
+          </div>
+          <span class="status-badge badge-placed" id="readymadeCount">Active</span>
+        </div>
+
+        <div id="readymadeSizesGrid" class="size-box-grid" style="margin-bottom:20px;">
+          <div style="color:#999; font-size:0.85rem;">Loading readymade sizes...</div>
+        </div>
+
+        <form onsubmit="handleAddPreset(event, 'numeric')" style="display:flex; gap:8px;">
+          <input type="text" id="newReadymadeInput" class="form-control" placeholder="Add size (e.g. 37, 48, FREE)" style="text-transform:uppercase;" required>
+          <button type="submit" class="btn-admin btn-admin-success" style="white-space:nowrap;">+ ADD</button>
+        </form>
+      </div>
+
       <!-- 2. SUIT & BLAZER CUT LENGTHS CARD -->
       <div class="stat-card" style="padding:24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
@@ -234,6 +254,20 @@
       const alphaList = allPresets.filter(p => p.type === 'standard' || p.type === 'alpha');
       const numericList = allPresets.filter(p => p.type === 'suit' || p.type === 'numeric');
 
+      const readymadeList = (presets || []).filter(p => p.type === 'numeric' || p.type === 'alpha' || p.type === 'readymade');
+      const readymadeGrid = document.getElementById('readymadeSizesGrid');
+      if (document.getElementById('readymadeCount')) {
+        document.getElementById('readymadeCount').textContent = `${readymadeList.filter(p => p.is_active).length} Active`;
+      }
+      if (readymadeGrid) {
+        readymadeGrid.innerHTML = readymadeList.map(p => `
+          <div class="size-chip-box ${p.is_active ? 'in-stock' : 'unselected'}" style="position:relative;" onclick="togglePreset('${p.id}', ${!p.is_active})" title="${p.is_active ? 'Click to disable' : 'Click to enable'}">
+            ${p.size_label}
+            <button onclick="event.stopPropagation(); deletePreset('${p.id}', '${p.size_label}')" style="position:absolute; top:2px; right:2px; background:rgba(0,0,0,0.5); color:#fff; border:none; border-radius:50%; width:14px; height:14px; font-size:9px; cursor:pointer; line-height:1;" title="Delete size">×</button>
+          </div>
+        `).join('');
+      }
+
       document.getElementById('alphaCount').textContent = `${alphaList.filter(p => p.is_active).length} Active`;
       document.getElementById('numericCount').textContent = `${numericList.filter(p => p.is_active).length} Active`;
 
@@ -254,7 +288,10 @@
 
     async function handleAddPreset(e, type) {
       e.preventDefault();
-      const input = document.getElementById(type === 'alpha' ? 'newAlphaInput' : 'newNumericInput');
+      let inputId = 'newNumericInput';
+      if (type === 'alpha') inputId = 'newAlphaInput';
+      else if (type === 'numeric' && document.getElementById('newReadymadeInput') && document.getElementById('newReadymadeInput').value) inputId = 'newReadymadeInput';
+      const input = document.getElementById(inputId);
       const label = input.value.trim().toUpperCase();
       if (!label) return;
 

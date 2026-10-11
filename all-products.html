@@ -157,17 +157,37 @@
             <span style="font-size:0.72rem; color:var(--text-muted);">Click box to toggle status</span>
           </div>
 
-          <div class="size-mode-tabs">
-            <button type="button" class="size-mode-btn active" id="editModeStandardBtn" onclick="switchEditSizeMode('standard')">Standard Cuts (1.2M - 2.5M)</button>
-            <button type="button" class="size-mode-btn" id="editModeSuitBtn" onclick="switchEditSizeMode('suit')">Suit &amp; Blazer Cuts (2.8M - 5.0M)</button>
-            <button type="button" class="size-mode-btn" id="editModeAllBtn" onclick="switchEditSizeMode('all')">All / Custom Meters</button>
+          <!-- Dual Sizing Mode Switcher (Readymade vs Cloth Material) -->
+          <div class="size-segment-bar">
+            <button type="button" class="size-segment-btn active" id="editSizeToggleReadymade" onclick="switchEditProductSizeType('readymade')">
+              <span>👕 READYMADE APPAREL</span>
+              <span style="font-size:0.7rem; font-weight:600; opacity:0.85;">(32, 34, 36, 38, S, M, L...)</span>
+            </button>
+            <button type="button" class="size-segment-btn" id="editSizeToggleCloth" onclick="switchEditProductSizeType('cloth_material')">
+              <span>✂️ CLOTH MATERIAL &amp; FABRICS</span>
+              <span style="font-size:0.7rem; font-weight:600; opacity:0.85;">(Per Piece, 1.2M, 1.6M, 2.0M...)</span>
+            </button>
+          </div>
+
+          <!-- Quick Bulk Actions & Legend -->
+          <div class="size-bulk-actions">
+            <div class="size-legend">
+              <span><span class="size-legend-dot in-stock"></span> In-Stock</span>
+              <span><span class="size-legend-dot out-of-stock"></span> Out-of-Stock (×)</span>
+              <span><span class="size-legend-dot unselected"></span> Not Offered</span>
+            </div>
+            <div class="size-btn-group">
+              <button type="button" class="btn-size-bulk" onclick="bulkSetEditSizes('in-stock')">✓ All In-Stock</button>
+              <button type="button" class="btn-size-bulk danger" onclick="bulkSetEditSizes('out-of-stock')">✕ All Out-of-Stock</button>
+              <button type="button" class="btn-size-bulk" onclick="bulkSetEditSizes('unselected')">Clear All</button>
+            </div>
           </div>
 
           <div id="editProductSizeGrid" class="size-box-grid"></div>
 
           <div class="custom-size-row">
-            <input type="text" id="editCustomSizeInput" class="form-control" placeholder="Add custom cut length (e.g. 1.75M, 2.20M, 4.5M)" style="font-size:0.8rem; padding:7px 10px; text-transform:uppercase;">
-            <button type="button" class="btn-admin" style="padding:6px 12px; font-size:0.75rem;" onclick="addEditCustomSizeTag()">+ ADD METER</button>
+            <input type="text" id="editCustomSizeInput" class="form-control" placeholder="Add custom size (e.g. 48, Free Size, 2.75M)" style="font-size:0.8rem; padding:7px 10px; text-transform:uppercase;">
+            <button type="button" class="btn-admin" style="padding:6px 12px; font-size:0.75rem;" onclick="addEditCustomSizeTag()">+ ADD SIZE</button>
           </div>
         </div>
 
@@ -326,8 +346,10 @@
     let currentEditGallery = [];
     let editStagedNewFiles = [];
     let adminCategories = [];
+    const READYMADE_SIZES = ['32', '34', '35', '36', '38', '40', '42', '44', '46', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+    const CLOTH_MATERIAL_SIZES = ['Per Piece', '1.2M', '1.4M', '1.6M', '1.8M', '2.0M', '2.25M', '2.5M', '2.8M', '3.0M', '3.25M', '3.5M', '4.0M', '5.0M'];
     let editProductSizesState = {};
-    let editSizeMode = 'standard';
+    let editCurrentProductType = 'readymade';
 
     function openDrawer() { document.getElementById('adminDrawer').classList.add('active'); }
     function closeDrawer(e) { if(e) e.stopPropagation(); document.getElementById('adminDrawer').classList.remove('active'); }
@@ -408,67 +430,109 @@
       const client = window.urSbClient || window.adminSupabase;
       editProductSizesState = {};
       
-      // Load master presets
-      const { data: presets } = await window.fetchAdminSizePresets();
-      (presets || []).forEach(pr => {
-        editProductSizesState[pr.size_label] = {
-          status: 'unselected',
-          type: pr.type
-        };
+      // Initialize Readymade sizes
+      READYMADE_SIZES.forEach(sz => {
+        editProductSizesState[sz] = { status: 'unselected', type: 'readymade' };
       });
+      // Initialize Cloth Material sizes
+      CLOTH_MATERIAL_SIZES.forEach(sz => {
+        editProductSizesState[sz] = { status: 'unselected', type: 'cloth_material' };
+      });
+
+      let detectedType = 'readymade';
 
       if (client) {
         const { data: variants } = await client.from('product_variants').select('*').eq('product_id', p.id);
         if (variants && variants.length > 0) {
           variants.forEach(v => {
             const isOut = v.is_in_stock === false || v.stock_quantity === 0;
-            const presetMatch = (presets || []).find(pr => pr.size_label === v.size);
-            const numVal = parseFloat(v.size) || 0;
-            const cutType = presetMatch ? presetMatch.type : (numVal >= 2.8 ? 'suit' : 'standard');
+            const isCloth = CLOTH_MATERIAL_SIZES.includes(v.size);
+            if (isCloth) detectedType = 'cloth_material';
             editProductSizesState[v.size] = {
               status: isOut ? 'out-of-stock' : 'in-stock',
-              type: cutType,
+              type: isCloth ? 'cloth_material' : 'readymade',
               variant_id: v.id
             };
           });
         }
       }
 
-      renderEditSizeBoxes();
+      switchEditProductSizeType(detectedType);
       document.getElementById('editModal').classList.add('active');
     }
 
-    function switchEditSizeMode(mode) {
-      editSizeMode = mode;
-      document.getElementById('editModeStandardBtn').classList.toggle('active', mode === 'standard');
-      document.getElementById('editModeSuitBtn').classList.toggle('active', mode === 'suit');
-      document.getElementById('editModeAllBtn').classList.toggle('active', mode === 'all');
+    function switchEditProductSizeType(type) {
+      editCurrentProductType = type;
+      const rBtn = document.getElementById('editSizeToggleReadymade');
+      const cBtn = document.getElementById('editSizeToggleCloth');
+      if (rBtn) rBtn.classList.toggle('active', type === 'readymade');
+      if (cBtn) cBtn.classList.toggle('active', type === 'cloth_material');
+      renderEditSizeBoxes();
+    }
+
+    function bulkSetEditSizes(targetStatus) {
+      const activeList = (editCurrentProductType === 'readymade') ? READYMADE_SIZES : CLOTH_MATERIAL_SIZES;
+      activeList.forEach(size => {
+        if (!editProductSizesState[size]) {
+          editProductSizesState[size] = { status: targetStatus, type: editCurrentProductType };
+        } else {
+          editProductSizesState[size].status = targetStatus;
+        }
+      });
       renderEditSizeBoxes();
     }
 
     function renderEditSizeBoxes() {
       const container = document.getElementById('editProductSizeGrid');
+      if (!container) return;
       container.innerHTML = '';
 
-      const keys = Object.keys(editProductSizesState);
-      const filteredKeys = keys.filter(label => {
-        const item = editProductSizesState[label];
-        if (editSizeMode === 'all') return true;
-        if (editSizeMode === 'standard') return item.type === 'standard' || item.type === 'custom';
-        if (editSizeMode === 'suit') return item.type === 'suit' || item.type === 'custom';
-        return true;
+      const isReadymade = (editCurrentProductType === 'readymade');
+      const primaryList = isReadymade ? READYMADE_SIZES : CLOTH_MATERIAL_SIZES;
+
+      const allKeys = Object.keys(editProductSizesState);
+      const displayKeys = [];
+
+      primaryList.forEach(k => {
+        if (!displayKeys.includes(k)) displayKeys.push(k);
       });
 
-      filteredKeys.forEach(label => {
+      allKeys.forEach(k => {
+        if (!displayKeys.includes(k)) {
+          const item = editProductSizesState[k];
+          if (item && (item.type === editCurrentProductType || item.type === 'custom')) {
+            displayKeys.push(k);
+          }
+        }
+      });
+
+      displayKeys.forEach(label => {
+        if (!editProductSizesState[label]) {
+          editProductSizesState[label] = { status: 'unselected', type: editCurrentProductType };
+        }
         const item = editProductSizesState[label];
         const box = document.createElement('div');
         box.className = `size-chip-box ${item.status}`;
-        box.textContent = label;
-        box.title = item.status === 'in-stock' ? 'In-Stock (Click to mark Out of Stock)' : (item.status === 'out-of-stock' ? 'Out-of-Stock (Click to disable)' : 'Click to enable');
+
+        let subText = 'CLICK TO ADD';
+        let hint = 'Click to mark In-Stock';
+        if (item.status === 'in-stock') {
+          subText = 'IN-STOCK';
+          hint = 'In-Stock (Click to mark Out-of-Stock)';
+        } else if (item.status === 'out-of-stock') {
+          subText = 'OUT OF STOCK';
+          hint = 'Out-of-Stock (Click to Remove)';
+        }
+
+        box.innerHTML = `
+          <span>${label}</span>
+          <span class="chip-state-sub">${subText}</span>
+        `;
+        box.title = hint;
         box.onclick = () => {
-          if (item.status === 'in-stock') item.status = 'out-of-stock';
-          else if (item.status === 'out-of-stock') item.status = 'unselected';
-          else item.status = 'in-stock';
+          if (item.status === 'unselected') item.status = 'in-stock';
+          else if (item.status === 'in-stock') item.status = 'out-of-stock';
+          else item.status = 'unselected';
           renderEditSizeBoxes();
         };
         container.appendChild(box);
@@ -479,11 +543,7 @@
       const input = document.getElementById('editCustomSizeInput');
       const label = input.value.trim().toUpperCase();
       if (!label) return;
-      if (!editProductSizesState[label]) {
-        editProductSizesState[label] = { status: 'in-stock', type: 'custom' };
-      } else {
-        editProductSizesState[label].status = 'in-stock';
-      }
+      editProductSizesState[label] = { status: 'in-stock', type: editCurrentProductType };
       input.value = '';
       renderEditSizeBoxes();
     }
