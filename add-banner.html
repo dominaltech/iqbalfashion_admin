@@ -719,49 +719,64 @@
       if (!client) return;
 
       try {
+        let loadedVideoUrl = null;
+        let loadedTitle = null;
+        let loadedSubtitle = null;
+        let loadedBadge = null;
+        let loadedLink = 'suiting.html';
+        let loadedFrameMode = 'auto';
+
         // 1. Try store_settings
         const { data: settings } = await client
           .from('store_settings')
-          .select('home_video_url, home_video_title, home_video_subtitle, home_video_frame_mode')
+          .select('*')
           .limit(1);
 
-        if (settings && settings[0] && settings[0].home_video_url) {
+        if (settings && settings[0]) {
           const s = settings[0];
-          activeVideoUrl = s.home_video_url;
-          document.getElementById('videoUrlInput').value = s.home_video_url;
-          if (s.home_video_title) document.getElementById('videoHeadingInput').value = s.home_video_title;
-          if (s.home_video_subtitle) document.getElementById('videoSubInput').value = s.home_video_subtitle;
-          if (s.home_video_frame_mode) document.getElementById('videoFrameModeInput').value = s.home_video_frame_mode;
-          const player = document.getElementById('adminHomeVideoPlayer');
-          if (player) {
-            player.src = activeVideoUrl;
-            player.load();
-          }
+          if (s.home_video_url) loadedVideoUrl = s.home_video_url;
+          if (s.home_video_title) loadedTitle = s.home_video_title;
+          if (s.home_video_subtitle) loadedSubtitle = s.home_video_subtitle;
+          if (s.home_video_frame_mode) loadedFrameMode = s.home_video_frame_mode;
         }
 
         // 2. Also check banners table for section = 'video'
-        const { data: vidBanner } = await client
+        const { data: vidBanners } = await client
           .from('banners')
           .select('*')
           .eq('section', 'video')
           .limit(1);
 
-        if (vidBanner && vidBanner[0]) {
-          const b = vidBanner[0];
-          if (b.video_url) {
-            activeVideoUrl = b.video_url;
-            document.getElementById('videoUrlInput').value = b.video_url;
-            const player = document.getElementById('adminHomeVideoPlayer');
-            if (player) {
-              player.src = activeVideoUrl;
-              player.load();
+        if (vidBanners && vidBanners[0]) {
+          const vb = vidBanners[0];
+          if (vb.video_url) {
+            const vbTime = vb.updated_at ? new Date(vb.updated_at).getTime() : 0;
+            const sTime = (settings && settings[0] && settings[0].updated_at) ? new Date(settings[0].updated_at).getTime() : 0;
+            if (!loadedVideoUrl || vbTime >= sTime) {
+              loadedVideoUrl = vb.video_url;
+              if (vb.title) loadedTitle = vb.title;
+              if (vb.subtitle) loadedSubtitle = vb.subtitle;
             }
           }
-          if (b.title) document.getElementById('videoHeadingInput').value = b.title;
-          if (b.subtitle) document.getElementById('videoSubInput').value = b.subtitle;
-          if (b.badge_text) document.getElementById('videoBadgeInput').value = b.badge_text;
-          if (b.link_url) document.getElementById('videoBtnLinkInput').value = b.link_url;
+          if (vb.badge_text) loadedBadge = vb.badge_text;
+          if (vb.link_url) loadedLink = vb.link_url;
         }
+
+        if (loadedVideoUrl) {
+          activeVideoUrl = loadedVideoUrl;
+          document.getElementById('videoUrlInput').value = loadedVideoUrl;
+          const player = document.getElementById('adminHomeVideoPlayer');
+          if (player) {
+            player.src = loadedVideoUrl;
+            player.load();
+          }
+        }
+        if (loadedTitle) document.getElementById('videoHeadingInput').value = loadedTitle;
+        if (loadedSubtitle) document.getElementById('videoSubInput').value = loadedSubtitle;
+        if (loadedBadge) document.getElementById('videoBadgeInput').value = loadedBadge;
+        if (loadedLink) document.getElementById('videoBtnLinkInput').value = loadedLink;
+        if (loadedFrameMode) document.getElementById('videoFrameModeInput').value = loadedFrameMode;
+
       } catch(err) {
         console.warn('loadVideoShowcaseSettings error:', err);
       }
@@ -787,35 +802,75 @@
         // Check if file is selected for upload
         const fileInput = document.getElementById('videoFileInput');
         if (fileInput.files && fileInput.files.length > 0) {
-          saveBtn.textContent = 'UPLOADING VIDEO FILE TO STORAGE...';
+          saveBtn.textContent = 'CHECKING STORAGE FOR PREVIOUS VIDEOS...';
           const file = fileInput.files[0];
-          
-          // Upload to storage bucket
+
+          // 1. Fetch list of existing video files before upload
+          let existingVideos = [];
+          try {
+            const { data: listData } = await client.storage
+              .from('banner-images')
+              .list('videos');
+            if (listData) existingVideos = listData;
+          } catch(listErr) {
+            console.warn('Existing video list check notice:', listErr);
+          }
+
+          // 2. Upload the new video file
+          saveBtn.textContent = 'UPLOADING NEW VIDEO TO STORAGE...';
           const uploadedUrl = await window.uploadFileToStorage(file, 'banner-images', 'videos');
           if (uploadedUrl) {
             videoUrl = uploadedUrl;
             activeVideoUrl = uploadedUrl;
             document.getElementById('videoUrlInput').value = uploadedUrl;
+
+            // 3. STORAGE PURGE: Delete all previous videos so ONLY 1 current video exists!
+            // Saves precious Supabase storage across repeated updates!
+            const newFilename = uploadedUrl.split('/').pop().split('?')[0];
+            const oldFilesToDelete = existingVideos
+              .filter(f => f.name && f.name !== newFilename && !f.name.startsWith('.'))
+              .map(f => `videos/${f.name}`);
+
+            if (oldFilesToDelete.length > 0) {
+              saveBtn.textContent = 'DELETING PREVIOUS VIDEO FROM STORAGE...';
+              console.log('[Storage Optimizer] Deleting previous video files to save Supabase storage:', oldFilesToDelete);
+              try {
+                await client.storage.from('banner-images').remove(oldFilesToDelete);
+              } catch(delErr) {
+                console.warn('Storage purge notice:', delErr);
+              }
+            }
           } else {
             console.warn('Storage upload returned empty; falling back to direct video URL.');
           }
         }
 
         saveBtn.textContent = 'SAVING TO DATABASE...';
+        const nowIso = new Date().toISOString();
 
         // 1. Update store_settings
-        const nowIso = new Date().toISOString();
         try {
-          await client
+          const updatePayload = {
+            home_video_url: videoUrl,
+            home_video_title: heading,
+            home_video_subtitle: subtitle,
+            updated_at: nowIso
+          };
+          if (frameMode) updatePayload.home_video_frame_mode = frameMode;
+
+          let { error: sErr } = await client
             .from('store_settings')
-            .update({
-              home_video_url: videoUrl,
-              home_video_title: heading,
-              home_video_subtitle: subtitle,
-              home_video_frame_mode: frameMode,
-              updated_at: nowIso
-            })
+            .update(updatePayload)
             .neq('id', '00000000-0000-0000-0000-000000000000');
+
+          if (sErr) {
+            console.warn('store_settings update notice (retrying without frame_mode):', sErr);
+            delete updatePayload.home_video_frame_mode;
+            await client
+              .from('store_settings')
+              .update(updatePayload)
+              .neq('id', '00000000-0000-0000-0000-000000000000');
+          }
         } catch(se) { console.warn('store_settings update notice:', se); }
 
         // 2. Upsert banners table with section = 'video'
@@ -837,37 +892,42 @@
               updated_at: nowIso
             }).eq('id', existingVid[0].id);
           } else {
-            await client.from('banners').insert([{
+            await client.from('banners').insert({
               title: heading,
               subtitle: subtitle,
               badge_text: badge,
               video_url: videoUrl,
-              image_url: 'images/hero1.jpg',
               link_url: link,
-              display_order: 99,
               is_active: true,
               section: 'video',
+              display_order: 10,
               updated_at: nowIso
-            }]);
+            });
           }
-        } catch(be) { console.warn('banners video upsert notice:', be); }
+        } catch(be) { console.warn('banners section=video save notice:', be); }
 
-        window.adminToast('Homepage Video Showcase updated & published successfully!');
+        // Update live admin video preview player
         const player = document.getElementById('adminHomeVideoPlayer');
         if (player) {
           player.src = videoUrl;
           player.load();
         }
+
+        if (window.showToast) {
+          window.showToast('Homepage background video published & previous video removed from storage!', 'success');
+        } else {
+          alert('Homepage background video published & previous video removed from storage!');
+        }
+
       } catch(err) {
-        console.error('Save video error:', err);
-        window.adminToast('Error: ' + err.message, true);
+        console.error('saveVideoShowcase error:', err);
+        alert('Error saving video: ' + err.message);
       } finally {
         saveBtn.disabled = false;
         saveBtn.textContent = 'SAVE & PUBLISH VIDEO SHOWCASE';
       }
     });
 
-    
     let activeBottomBannerUrl1 = 'images/hero2.jpg';
     let activeBottomBannerUrl2 = 'images/hero1.jpg';
 
