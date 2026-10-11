@@ -376,7 +376,7 @@
   // 10. DRAWER CONTROLS
   window.openDrawer = function() {
     let drawer = document.getElementById('adminDrawer');
-    if (drawer) drawer.classList.add('active');
+    if (drawer) { drawer.classList.add('active'); try { history.pushState({ adminModal: 'drawer' }, ''); } catch(e) {} }
   };
   window.closeDrawer = function() {
     let drawer = document.getElementById('adminDrawer');
@@ -913,3 +913,25 @@
 
 })();
 
+
+  // ==============================================================================
+  // ADMIN PANEL MOBILE BACK BUTTON INTERCEPTOR
+  // ==============================================================================
+  window.addEventListener('popstate', function() {
+    // 1. Close drawer if open
+    const drawer = document.getElementById('adminDrawer');
+    if (drawer && (drawer.classList.contains('active') || drawer.classList.contains('open'))) {
+      drawer.classList.remove('active', 'open');
+      return;
+    }
+
+    // 2. Close any open admin modals
+    const openModals = document.querySelectorAll('.admin-modal-overlay.active, .admin-modal-overlay.open');
+    if (openModals.length > 0) {
+      openModals.forEach(m => {
+        m.classList.remove('active', 'open');
+        m.style.display = 'none';
+      });
+      return;
+    }
+  });

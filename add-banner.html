@@ -137,9 +137,21 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Target Action Button Link</label>
-          <input type="text" id="videoBtnLinkInput" class="form-control" value="suiting.html" placeholder="e.g. suiting.html or cloth-material.html">
+        <div class="admin-grid-2">
+          <div class="form-group">
+            <label>Target Action Button Link</label>
+            <input type="text" id="videoBtnLinkInput" class="form-control" value="suiting.html" placeholder="e.g. suiting.html or cloth-material.html">
+          </div>
+          <div class="form-group">
+            <label>Video Framing &amp; Orientation Mode</label>
+            <select id="videoFrameModeInput" class="form-control">
+              <option value="auto">Smart Adaptive (Horizontal on PC / Vertical 9:16 on Mobile)</option>
+              <option value="cover">Full-Bleed Cover (Edge-to-Edge Fill)</option>
+              <option value="contain">Fit Entire Video (No Cropping / Original Ratio)</option>
+              <option value="vertical">Vertical Reel / Story Frame (9:16 Portrait)</option>
+              <option value="widescreen">Cinema Widescreen (16:9 Landscape)</option>
+            </select>
+          </div>
         </div>
 
         <button type="submit" id="saveVideoShowcaseBtn" class="btn-admin btn-admin-success" style="width: 100%; padding: 13px; font-weight: 800; font-size: 0.9rem;">
@@ -582,7 +594,7 @@
         // 1. Try store_settings
         const { data: settings } = await client
           .from('store_settings')
-          .select('home_video_url, home_video_title, home_video_subtitle')
+          .select('home_video_url, home_video_title, home_video_subtitle, home_video_frame_mode')
           .limit(1);
 
         if (settings && settings[0] && settings[0].home_video_url) {
@@ -591,6 +603,7 @@
           document.getElementById('videoUrlInput').value = s.home_video_url;
           if (s.home_video_title) document.getElementById('videoHeadingInput').value = s.home_video_title;
           if (s.home_video_subtitle) document.getElementById('videoSubInput').value = s.home_video_subtitle;
+          if (s.home_video_frame_mode) document.getElementById('videoFrameModeInput').value = s.home_video_frame_mode;
           const player = document.getElementById('adminHomeVideoPlayer');
           if (player) {
             player.src = activeVideoUrl;
@@ -640,6 +653,7 @@
         const badge = document.getElementById('videoBadgeInput').value.trim();
         const subtitle = document.getElementById('videoSubInput').value.trim();
         const link = document.getElementById('videoBtnLinkInput').value.trim() || 'suiting.html';
+        const frameMode = document.getElementById('videoFrameModeInput').value || 'auto';
         let videoUrl = document.getElementById('videoUrlInput').value.trim() || activeVideoUrl;
 
         // Check if file is selected for upload
@@ -670,6 +684,7 @@
               home_video_url: videoUrl,
               home_video_title: heading,
               home_video_subtitle: subtitle,
+              home_video_frame_mode: frameMode,
               updated_at: nowIso
             })
             .neq('id', '00000000-0000-0000-0000-000000000000');
