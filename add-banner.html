@@ -124,17 +124,12 @@
           <textarea id="videoSubInput" class="form-control" rows="2" placeholder="e.g. Master craftsmanship, hand-finished suiting & shirting tailored to your exact measurements.">Master craftsmanship, hand-finished suiting &amp; shirting tailored to your exact measurements.</textarea>
         </div>
 
-        <div class="admin-grid-2">
-          <div class="form-group">
-            <label>Upload Video File (MP4 or WebM)</label>
+        <div class="form-group">
+            <label>Upload Video File (MP4 or WebM) *</label>
             <input type="file" id="videoFileInput" class="form-control" accept="video/mp4,video/webm" onchange="handleAdminVideoFileSelect(this)">
             <small style="display: block; margin-top: 5px; color: var(--text-muted); font-size: 11.5px;">Recommended: 720p/1080p web-optimized MP4 (under 25MB) for ultra-fast playback.</small>
           </div>
-          <div class="form-group">
-            <label>Or Direct Video URL (CDN / Cloudinary / Supabase)</label>
-            <input type="url" id="videoUrlInput" class="form-control" placeholder="https://..." value="https://assets.mixkit.co/videos/preview/mixkit-tailor-working-on-a-suit-jacket-41394-large.mp4" onchange="handleAdminVideoUrlChange(this.value)">
-            <small style="display: block; margin-top: 5px; color: var(--text-muted); font-size: 11.5px;">Direct URL or Supabase storage link. Updates live video player immediately.</small>
-          </div>
+          <input type="hidden" id="videoUrlInput" value="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/videos/1791709271196_hd1krx_1000239021_mp4.mp4">
         </div>
 
         <div class="admin-grid-2">
@@ -207,17 +202,12 @@
             <textarea id="bottomBanner1Sub" class="form-control" rows="2" placeholder="e.g. Handcrafted sherwanis, kurtas & bespoke regal styling for the gentleman.">Handcrafted sherwanis, kurtas &amp; bespoke regal styling for the gentleman.</textarea>
           </div>
 
-          <div class="admin-grid-2">
-            <div class="form-group">
-              <label>Upload Banner 1 Image</label>
+          <div class="form-group">
+              <label>Upload Banner 1 Image *</label>
               <input type="file" id="bottomBanner1File" class="form-control" accept="image/*" onchange="previewBottomBannerFile(this, 1)">
               <small style="color: var(--text-muted); font-size: 11px; display: block; margin-top: 4px;">Recommended: 1920x600 or 1200x500 JPG/WebP</small>
+              <input type="hidden" id="bottomBanner1CurrentUrl" value="images/hero2.jpg">
             </div>
-            <div class="form-group">
-              <label>Or Image URL</label>
-              <input type="url" id="bottomBanner1Url" class="form-control" placeholder="https://..." value="images/hero2.jpg" oninput="previewBottomBannerUrl(this.value, 1)">
-            </div>
-          </div>
 
           <div class="admin-grid-2">
             <div class="form-group">
@@ -266,17 +256,12 @@
             <textarea id="bottomBanner2Sub" class="form-control" rows="2" placeholder="e.g. Master tailor cut lengths in pure wool, linen, cashmeres & fine twill.">Master tailor cut lengths in pure wool, linen, cashmeres &amp; fine twill.</textarea>
           </div>
 
-          <div class="admin-grid-2">
-            <div class="form-group">
-              <label>Upload Banner 2 Image</label>
+          <div class="form-group">
+              <label>Upload Banner 2 Image *</label>
               <input type="file" id="bottomBanner2File" class="form-control" accept="image/*" onchange="previewBottomBannerFile(this, 2)">
               <small style="color: var(--text-muted); font-size: 11px; display: block; margin-top: 4px;">Recommended: 1920x600 or 1200x500 JPG/WebP</small>
+              <input type="hidden" id="bottomBanner2CurrentUrl" value="images/hero1.jpg">
             </div>
-            <div class="form-group">
-              <label>Or Image URL</label>
-              <input type="url" id="bottomBanner2Url" class="form-control" placeholder="https://..." value="images/hero1.jpg" oninput="previewBottomBannerUrl(this.value, 2)">
-            </div>
-          </div>
 
           <div class="admin-grid-2">
             <div class="form-group">
@@ -450,7 +435,7 @@
           <label>Replace Image (Choose file to upload new image)</label>
           <input type="file" id="editBanImgFile" class="form-control" accept="image/*" onchange="handleEditBannerPreview(this)">
           <small style="display: block; margin-top: 5px; color: var(--text-muted); font-size: 11.5px; font-weight: 500;">Tip: Square images (1:1 aspect ratio, e.g. 1000×1000px or 800×800px) recommended.</small>
-          <input type="text" id="editBanImgUrl" class="form-control" style="margin-top: 8px;" placeholder="Or paste image URL directly">
+          <input type="hidden" id="editBanImgUrl">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
@@ -1000,7 +985,7 @@
             if (b1.subtitle) document.getElementById('bottomBanner1Sub').value = b1.subtitle;
             if (b1.link_url) document.getElementById('bottomBanner1Link').value = b1.link_url;
             if (b1.image_url) {
-              document.getElementById('bottomBanner1Url').value = b1.image_url;
+              const cur1 = document.getElementById('bottomBanner1CurrentUrl'); if (cur1) cur1.value = b1.image_url;
               activeBottomBannerUrl1 = b1.image_url;
               const preview = document.getElementById('adminBottomBannerPreview1');
               if (preview) preview.src = b1.image_url;
@@ -1014,7 +999,7 @@
             if (b2.subtitle) document.getElementById('bottomBanner2Sub').value = b2.subtitle;
             if (b2.link_url) document.getElementById('bottomBanner2Link').value = b2.link_url;
             if (b2.image_url) {
-              document.getElementById('bottomBanner2Url').value = b2.image_url;
+              const cur2 = document.getElementById('bottomBanner2CurrentUrl'); if (cur2) cur2.value = b2.image_url;
               activeBottomBannerUrl2 = b2.image_url;
               const preview = document.getElementById('adminBottomBannerPreview2');
               if (preview) preview.src = b2.image_url;
@@ -1042,7 +1027,7 @@
         const badge1 = document.getElementById('bottomBanner1Badge').value.trim();
         const sub1 = document.getElementById('bottomBanner1Sub').value.trim();
         const link1 = document.getElementById('bottomBanner1Link').value.trim() || 'ethnic.html';
-        let img1 = document.getElementById('bottomBanner1Url').value.trim() || activeBottomBannerUrl1;
+        let img1 = (document.getElementById('bottomBanner1CurrentUrl') ? document.getElementById('bottomBanner1CurrentUrl').value.trim() : '') || activeBottomBannerUrl1;
 
         // Check if file selected for Banner 1
         const fileInput1 = document.getElementById('bottomBanner1File');
@@ -1052,8 +1037,14 @@
           if (up1) {
             img1 = up1;
             activeBottomBannerUrl1 = up1;
-            document.getElementById('bottomBanner1Url').value = up1;
+            const cur1 = document.getElementById('bottomBanner1CurrentUrl'); if (cur1) cur1.value = up1;
+          } else {
+            throw new Error('Banner 1 image upload failed. Please check storage bucket or try another image.');
           }
+        }
+
+        if (!img1) {
+          throw new Error('Please select an image file to upload for Banner 1.');
         }
 
         // Banner 2 data
@@ -1061,7 +1052,7 @@
         const badge2 = document.getElementById('bottomBanner2Badge').value.trim();
         const sub2 = document.getElementById('bottomBanner2Sub').value.trim();
         const link2 = document.getElementById('bottomBanner2Link').value.trim() || 'suiting.html';
-        let img2 = document.getElementById('bottomBanner2Url').value.trim() || activeBottomBannerUrl2;
+        let img2 = (document.getElementById('bottomBanner2CurrentUrl') ? document.getElementById('bottomBanner2CurrentUrl').value.trim() : '') || activeBottomBannerUrl2;
 
         // Check if file selected for Banner 2
         const fileInput2 = document.getElementById('bottomBanner2File');
@@ -1071,8 +1062,14 @@
           if (up2) {
             img2 = up2;
             activeBottomBannerUrl2 = up2;
-            document.getElementById('bottomBanner2Url').value = up2;
+            const cur2 = document.getElementById('bottomBanner2CurrentUrl'); if (cur2) cur2.value = up2;
+          } else {
+            throw new Error('Banner 2 image upload failed. Please check storage bucket or try another image.');
           }
+        }
+
+        if (!img2) {
+          throw new Error('Please select an image file to upload for Banner 2.');
         }
 
         saveBtn.textContent = 'SAVING TO DATABASE...';

@@ -466,7 +466,7 @@
     if (!file) return null;
 
     // Automatic Client-Side Compression before network transfer
-    const isBanner = folder === 'banners' || folder === 'categories';
+    const isBanner = folder === 'banners' || folder === 'categories' || folder === 'bottom-banners';
     const compressedFile = await window.compressImageFile(file, { isBanner, ...options });
     file = compressedFile || file;
 
@@ -900,8 +900,11 @@
       }
     }
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Admin SW registered:', reg))
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+        .then(reg => {
+          reg.update();
+          console.log('Admin SW registered:', reg);
+        })
         .catch(err => console.error('Admin SW registration failed:', err));
     }
     window.initDeliverySettingsUI();
