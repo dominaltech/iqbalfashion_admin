@@ -21,22 +21,23 @@
   </header>
 
   <!-- DESKTOP NAV TABS -->
+    <!-- DESKTOP NAV TABS -->
   <nav class="admin-nav-tabs">
-    <a href="index.html" class="admin-nav-tab">Dashboard</a>
-    <a href="orders.html" class="admin-nav-tab">Orders</a>
-    <a href="coupons.html" class="admin-nav-tab">Coupons &amp; Banners</a>
-    <a href="all-products.html" class="admin-nav-tab">All Products</a>
-    <a href="categories.html" class="admin-nav-tab">Categories</a>
-    <a href="sizes.html" class="admin-nav-tab">Sizes &amp; Stock</a>
-    <a href="add-product.html" class="admin-nav-tab">+ Add Product</a>
-    <a href="bulk-upload.html" class="admin-nav-tab bulk-highlight">Bulk Upload</a>
-    <a href="add-banner.html" class="admin-nav-tab active">Hero Banners</a>
-    <a href="users.html" class="admin-nav-tab">Users</a>
+    <a href="index.html" class="admin-nav-tab ">Dashboard</a>
+    <a href="orders.html" class="admin-nav-tab ">Orders</a>
+    <a href="coupons.html" class="admin-nav-tab ">Coupons &amp; Events</a>
+    <a href="add-banner.html" class="admin-nav-tab active">Banners &amp; Video</a>
+    <a href="all-products.html" class="admin-nav-tab ">All Products</a>
+    <a href="add-product.html" class="admin-nav-tab ">+ Add Product</a>
+    <a href="bulk-upload.html" class="admin-nav-tab bulk-highlight ">Bulk Upload</a>
+    <a href="categories.html" class="admin-nav-tab ">Categories</a>
+    <a href="sizes.html" class="admin-nav-tab ">Sizes &amp; Stock</a>
+    <a href="users.html" class="admin-nav-tab ">Users</a>
   </nav>
 
-  <main class="admin-container" style="display: grid; grid-template-columns: 1fr; gap: 32px;">
+  <main class="admin-container" style="display: flex; flex-direction: column; gap: 24px; min-width: 0; width: 100%; max-width: 1280px; box-sizing: border-box;">
     <!-- CREATE BANNER FORM -->
-    <div style="background: #ffffff; padding: 28px; border-radius: var(--radius-md); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+    <div class="admin-card-pad" style="background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); min-width: 0; width: 100%;">
       <h2 style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; margin-bottom: 24px;">ADD HOMEPAGE HERO SLIDER BANNER</h2>
       <form id="addBannerForm">
         <div class="form-group">
@@ -47,7 +48,7 @@
           <label>Subtitle</label>
           <input type="text" id="banSub" class="form-control" placeholder="e.g. PREMIUM WOOL BLEND · FORMAL & CASUAL FABRICS">
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="admin-grid-2">
           <div class="form-group">
             <label>Badge Text</label>
             <input type="text" id="banBadge" class="form-control" placeholder="e.g. NEW ARRIVALS">
@@ -67,7 +68,7 @@
     </div>
 
     <!-- EXISTING BANNERS TABLE -->
-    <div>
+    <div style="min-width: 0; width: 100%; max-width: 100%;">
       <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; margin-bottom: 16px;">ACTIVE HOMEPAGE SLIDER BANNERS</h3>
       <div class="admin-table-wrapper">
         <table class="admin-table">
@@ -87,29 +88,90 @@
         </table>
       </div>
     </div>
+  
+    <!-- HOMEPAGE BACKGROUND VIDEO SHOWCASE CARD -->
+    <div class="admin-card-pad" style="background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); min-width: 0; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: var(--dark-brown);">HOMEPAGE BACKGROUND VIDEO SHOWCASE</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Manage the full-width high-fashion background video, headline titles and link on the website.</p>
+        </div>
+        <span class="status-badge badge-placed" style="font-size: 0.72rem;">LIVE HOMEPAGE SECTION</span>
+      </div>
+
+      <!-- Live Video Preview Player -->
+      <div class="admin-video-preview-wrapper" style="border: 1px solid var(--border-medium); border-radius: 6px; overflow: hidden; background: #000; margin-bottom: 20px;">
+        <video id="adminHomeVideoPlayer" controls playsinline muted style="width: 100%; max-height: 280px; object-fit: cover; display: block;" poster="images/hero1.jpg">
+          <source id="adminHomeVideoSource" src="https://assets.mixkit.co/videos/preview/mixkit-tailor-working-on-a-suit-jacket-41394-large.mp4" type="video/mp4">
+          Your browser does not support HTML5 video preview.
+        </video>
+      </div>
+
+      <form id="homeVideoForm">
+        <div class="admin-grid-2">
+          <div class="form-group">
+            <label>Video Section Heading *</label>
+            <input type="text" id="videoHeadingInput" class="form-control" placeholder="e.g. THE BESPOKE EXPERIENCE" required value="THE BESPOKE EXPERIENCE">
+          </div>
+          <div class="form-group">
+            <label>Badge Pill Text</label>
+            <input type="text" id="videoBadgeInput" class="form-control" placeholder="e.g. ROYAL HERITAGE BESPOKE" value="ROYAL HERITAGE BESPOKE">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Section Subtitle / Description</label>
+          <textarea id="videoSubInput" class="form-control" rows="2" placeholder="e.g. Master craftsmanship, hand-finished suiting & shirting tailored to your exact measurements.">Master craftsmanship, hand-finished suiting &amp; shirting tailored to your exact measurements.</textarea>
+        </div>
+
+        <div class="admin-grid-2">
+          <div class="form-group">
+            <label>Upload Video File (MP4 or WebM)</label>
+            <input type="file" id="videoFileInput" class="form-control" accept="video/mp4,video/webm" onchange="handleAdminVideoFileSelect(this)">
+            <small style="display: block; margin-top: 5px; color: var(--text-muted); font-size: 11.5px;">Recommended: 720p/1080p web-optimized MP4 (under 25MB) for ultra-fast playback.</small>
+          </div>
+          <div class="form-group">
+            <label>Or Direct Video URL (CDN / Cloudinary / Supabase)</label>
+            <input type="url" id="videoUrlInput" class="form-control" placeholder="https://..." value="https://assets.mixkit.co/videos/preview/mixkit-tailor-working-on-a-suit-jacket-41394-large.mp4" onchange="handleAdminVideoUrlChange(this.value)">
+            <small style="display: block; margin-top: 5px; color: var(--text-muted); font-size: 11.5px;">Direct URL or Supabase storage link. Updates live video player immediately.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Target Action Button Link</label>
+          <input type="text" id="videoBtnLinkInput" class="form-control" value="suiting.html" placeholder="e.g. suiting.html or cloth-material.html">
+        </div>
+
+        <button type="submit" id="saveVideoShowcaseBtn" class="btn-admin btn-admin-success" style="width: 100%; padding: 13px; font-weight: 800; font-size: 0.9rem;">
+          SAVE &amp; PUBLISH VIDEO SHOWCASE
+        </button>
+      </form>
+    </div>
+
   </main>
 
   <!-- FIXED MOBILE BOTTOM TASKBAR -->
+    <!-- FIXED MOBILE BOTTOM TASKBAR -->
   <nav class="admin-mobile-taskbar">
-    <a href="index.html" class="admin-taskbar-tab">
+    <a href="index.html" class="admin-taskbar-tab ">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span>Dashboard</span>
     </a>
-    <a href="orders.html" class="admin-taskbar-tab">
+    <a href="orders.html" class="admin-taskbar-tab ">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span>Orders</span>
     </a>
-    <a href="all-products.html" class="admin-taskbar-tab">
+    <a href="all-products.html" class="admin-taskbar-tab ">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       <span>Products</span>
     </a>
-    <a href="categories.html" class="admin-taskbar-tab">
+    <a href="categories.html" class="admin-taskbar-tab ">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
       <span>Categories</span>
     </a>
-    <a href="sizes.html" class="admin-taskbar-tab">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-      <span>Sizes</span>
+    <a href="add-banner.html" class="admin-taskbar-tab active">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Banners</span>
     </a>
     <button class="admin-taskbar-tab" onclick="openDrawer()">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -118,6 +180,7 @@
   </nav>
 
   <!-- SECTION-WISE ADMIN NAVIGATION DRAWER -->
+    <!-- SECTION-WISE ADMIN NAVIGATION DRAWER -->
   <div class="drawer-overlay" id="adminDrawer" onclick="closeDrawer(event)">
     <div class="drawer-left" onclick="event.stopPropagation()">
       <div class="drawer-header">
@@ -133,11 +196,11 @@
         <!-- SECTION 1: OVERVIEW & SALES -->
         <div class="drawer-menu-section">
           <div class="drawer-section-heading">OVERVIEW &amp; SALES</div>
-          <a href="index.html" class="drawer-nav-item">
+          <a href="index.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
             <span>Analytics Dashboard</span>
           </a>
-          <a href="orders.html" class="drawer-nav-item">
+          <a href="orders.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             <span>Customer Orders &amp; Slip</span>
           </a>
@@ -146,40 +209,36 @@
         <!-- SECTION 2: MARKETING & PROMOTIONS -->
         <div class="drawer-menu-section">
           <div class="drawer-section-heading">MARKETING &amp; PROMOTIONS</div>
-          <a href="coupons.html" class="drawer-nav-item highlight-item">
+          <a href="coupons.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-            <span>Discount Coupons</span>
-          </a>
-          <a href="coupons.html" class="drawer-nav-item">
-            <svg viewBox="0 0 24 24" class="drawer-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>Homepage Event Banners</span>
+            <span>Discount Coupons &amp; Events</span>
           </a>
           <a href="add-banner.html" class="drawer-nav-item active">
             <svg viewBox="0 0 24 24" class="drawer-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            <span>Hero Slider Banners</span>
+            <span>Hero Banners &amp; Video</span>
           </a>
         </div>
 
         <!-- SECTION 3: CATALOG & INVENTORY -->
         <div class="drawer-menu-section">
           <div class="drawer-section-heading">CATALOG &amp; INVENTORY</div>
-          <a href="all-products.html" class="drawer-nav-item">
+          <a href="all-products.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             <span>All Products Catalog</span>
           </a>
-          <a href="add-product.html" class="drawer-nav-item">
+          <a href="add-product.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <span>+ Add New Product</span>
           </a>
-          <a href="bulk-upload.html" class="drawer-nav-item">
+          <a href="bulk-upload.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             <span>Bulk Product Upload</span>
           </a>
-          <a href="categories.html" class="drawer-nav-item">
+          <a href="categories.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             <span>Manage Categories</span>
           </a>
-          <a href="sizes.html" class="drawer-nav-item">
+          <a href="sizes.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
             <span>Sizes &amp; Stock Matrix</span>
           </a>
@@ -188,7 +247,7 @@
         <!-- SECTION 4: USERS & NOTIFICATIONS -->
         <div class="drawer-menu-section">
           <div class="drawer-section-heading">USERS &amp; SYSTEM</div>
-          <a href="users.html" class="drawer-nav-item">
+          <a href="users.html" class="drawer-nav-item ">
             <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span>Registered Customers</span>
           </a>
@@ -200,6 +259,7 @@
 
       </div>
     </div>
+  </div>
   </div>
 
   <!-- EDIT BANNER MODAL -->
@@ -486,9 +546,188 @@
       }
     }
 
+    
+    // ==============================================================================
+    // HOMEPAGE BACKGROUND VIDEO SHOWCASE ADMIN CONTROLLER
+    // ==============================================================================
+    let activeVideoUrl = 'https://assets.mixkit.co/videos/preview/mixkit-tailor-working-on-a-suit-jacket-41394-large.mp4';
+
+    function handleAdminVideoUrlChange(url) {
+      if (!url || !url.trim()) return;
+      activeVideoUrl = url.trim();
+      const player = document.getElementById('adminHomeVideoPlayer');
+      if (player) {
+        player.src = activeVideoUrl;
+        player.load();
+      }
+    }
+
+    function handleAdminVideoFileSelect(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const localBlobUrl = URL.createObjectURL(file);
+        const player = document.getElementById('adminHomeVideoPlayer');
+        if (player) {
+          player.src = localBlobUrl;
+          player.load();
+        }
+      }
+    }
+
+    async function loadVideoShowcaseSettings() {
+      const client = window.urSbClient || window.adminSupabase || (window.supabase ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
+      if (!client) return;
+
+      try {
+        // 1. Try store_settings
+        const { data: settings } = await client
+          .from('store_settings')
+          .select('home_video_url, home_video_title, home_video_subtitle')
+          .limit(1);
+
+        if (settings && settings[0] && settings[0].home_video_url) {
+          const s = settings[0];
+          activeVideoUrl = s.home_video_url;
+          document.getElementById('videoUrlInput').value = s.home_video_url;
+          if (s.home_video_title) document.getElementById('videoHeadingInput').value = s.home_video_title;
+          if (s.home_video_subtitle) document.getElementById('videoSubInput').value = s.home_video_subtitle;
+          const player = document.getElementById('adminHomeVideoPlayer');
+          if (player) {
+            player.src = activeVideoUrl;
+            player.load();
+          }
+        }
+
+        // 2. Also check banners table for section = 'video'
+        const { data: vidBanner } = await client
+          .from('banners')
+          .select('*')
+          .eq('section', 'video')
+          .limit(1);
+
+        if (vidBanner && vidBanner[0]) {
+          const b = vidBanner[0];
+          if (b.video_url) {
+            activeVideoUrl = b.video_url;
+            document.getElementById('videoUrlInput').value = b.video_url;
+            const player = document.getElementById('adminHomeVideoPlayer');
+            if (player) {
+              player.src = activeVideoUrl;
+              player.load();
+            }
+          }
+          if (b.title) document.getElementById('videoHeadingInput').value = b.title;
+          if (b.subtitle) document.getElementById('videoSubInput').value = b.subtitle;
+          if (b.badge_text) document.getElementById('videoBadgeInput').value = b.badge_text;
+          if (b.link_url) document.getElementById('videoBtnLinkInput').value = b.link_url;
+        }
+      } catch(err) {
+        console.warn('loadVideoShowcaseSettings error:', err);
+      }
+    }
+
+    document.getElementById('homeVideoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const saveBtn = document.getElementById('saveVideoShowcaseBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'SAVING VIDEO SHOWCASE...';
+
+      try {
+        const client = window.urSbClient || window.adminSupabase || (window.supabase ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
+        if (!client) throw new Error('Database client not connected.');
+
+        const heading = document.getElementById('videoHeadingInput').value.trim();
+        const badge = document.getElementById('videoBadgeInput').value.trim();
+        const subtitle = document.getElementById('videoSubInput').value.trim();
+        const link = document.getElementById('videoBtnLinkInput').value.trim() || 'suiting.html';
+        let videoUrl = document.getElementById('videoUrlInput').value.trim() || activeVideoUrl;
+
+        // Check if file is selected for upload
+        const fileInput = document.getElementById('videoFileInput');
+        if (fileInput.files && fileInput.files.length > 0) {
+          saveBtn.textContent = 'UPLOADING VIDEO FILE TO STORAGE...';
+          const file = fileInput.files[0];
+          
+          // Upload to storage bucket
+          const uploadedUrl = await window.uploadFileToStorage(file, 'banner-images', 'videos');
+          if (uploadedUrl) {
+            videoUrl = uploadedUrl;
+            activeVideoUrl = uploadedUrl;
+            document.getElementById('videoUrlInput').value = uploadedUrl;
+          } else {
+            console.warn('Storage upload returned empty; falling back to direct video URL.');
+          }
+        }
+
+        saveBtn.textContent = 'SAVING TO DATABASE...';
+
+        // 1. Update store_settings
+        const nowIso = new Date().toISOString();
+        try {
+          await client
+            .from('store_settings')
+            .update({
+              home_video_url: videoUrl,
+              home_video_title: heading,
+              home_video_subtitle: subtitle,
+              updated_at: nowIso
+            })
+            .neq('id', '00000000-0000-0000-0000-000000000000');
+        } catch(se) { console.warn('store_settings update notice:', se); }
+
+        // 2. Upsert banners table with section = 'video'
+        try {
+          const { data: existingVid } = await client
+            .from('banners')
+            .select('id')
+            .eq('section', 'video')
+            .limit(1);
+
+          if (existingVid && existingVid.length > 0) {
+            await client.from('banners').update({
+              title: heading,
+              subtitle: subtitle,
+              badge_text: badge,
+              video_url: videoUrl,
+              link_url: link,
+              is_active: true,
+              updated_at: nowIso
+            }).eq('id', existingVid[0].id);
+          } else {
+            await client.from('banners').insert([{
+              title: heading,
+              subtitle: subtitle,
+              badge_text: badge,
+              video_url: videoUrl,
+              image_url: 'images/hero1.jpg',
+              link_url: link,
+              display_order: 99,
+              is_active: true,
+              section: 'video',
+              updated_at: nowIso
+            }]);
+          }
+        } catch(be) { console.warn('banners video upsert notice:', be); }
+
+        window.adminToast('Homepage Video Showcase updated & published successfully!');
+        const player = document.getElementById('adminHomeVideoPlayer');
+        if (player) {
+          player.src = videoUrl;
+          player.load();
+        }
+      } catch(err) {
+        console.error('Save video error:', err);
+        window.adminToast('Error: ' + err.message, true);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'SAVE & PUBLISH VIDEO SHOWCASE';
+      }
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
+      loadVideoShowcaseSettings();
       loadBanners();
-      document.addEventListener('adminSupabaseReady', loadBanners);
+      document.addEventListener('adminSupabaseReady', () => { loadBanners(); loadVideoShowcaseSettings(); });
     });
   </script>
 </body>
