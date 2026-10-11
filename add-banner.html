@@ -160,6 +160,134 @@
       </form>
     </div>
 
+
+    <!-- DUAL HOMEPAGE BOTTOM PROMO BANNERS MANAGEMENT CARD -->
+    <div class="admin-card-pad" style="background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); min-width: 0; width: 100%; margin-top: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: var(--dark-brown);">HOMEPAGE DUAL BOTTOM PROMO BANNERS</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Manage the 2 promo banners stacked one below each other above the footer on the store.</p>
+        </div>
+        <span class="status-badge badge-placed" style="font-size: 0.72rem;">ONE BELOW EACH OTHER</span>
+      </div>
+
+      <form id="bottomBannersForm">
+        <!-- BANNER 1 (UPPER) -->
+        <div style="background: #fbfbfb; border: 1px solid var(--border-medium); border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h4 style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: var(--dark-brown); margin: 0;">BOTTOM BANNER 1 (UPPER BANNER)</h4>
+            <span style="font-size: 0.75rem; background: var(--gold-accent); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 700;">POSITION #1</span>
+          </div>
+
+          <!-- Preview 1 -->
+          <div style="height: 140px; border-radius: 6px; overflow: hidden; background: #111; margin-bottom: 14px; position: relative; border: 1px solid #ddd;">
+            <img id="adminBottomBannerPreview1" src="images/hero2.jpg" alt="Preview 1" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; bottom: 8px; left: 12px; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 600;" id="adminBottomBannerOverlayTitle1">
+              WEDDING SPECIAL: BESPOKE ROYAL WEDDING &amp; ETHNIC WEAR
+            </div>
+          </div>
+
+          <div class="admin-grid-2">
+            <div class="form-group">
+              <label>Banner 1 Headline Title *</label>
+              <input type="text" id="bottomBanner1Title" class="form-control" required placeholder="e.g. BESPOKE ROYAL WEDDING &amp; ETHNIC WEAR" value="BESPOKE ROYAL WEDDING &amp; ETHNIC WEAR" oninput="updateBottomBanner1PreviewTitle()">
+            </div>
+            <div class="form-group">
+              <label>Banner 1 Badge / Pill Text</label>
+              <input type="text" id="bottomBanner1Badge" class="form-control" placeholder="e.g. WEDDING SPECIAL" value="WEDDING SPECIAL" oninput="updateBottomBanner1PreviewTitle()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Banner 1 Subtitle / Description</label>
+            <textarea id="bottomBanner1Sub" class="form-control" rows="2" placeholder="e.g. Handcrafted sherwanis, kurtas & bespoke regal styling for the gentleman.">Handcrafted sherwanis, kurtas &amp; bespoke regal styling for the gentleman.</textarea>
+          </div>
+
+          <div class="admin-grid-2">
+            <div class="form-group">
+              <label>Upload Banner 1 Image</label>
+              <input type="file" id="bottomBanner1File" class="form-control" accept="image/*" onchange="previewBottomBannerFile(this, 1)">
+              <small style="color: var(--text-muted); font-size: 11px; display: block; margin-top: 4px;">Recommended: 1920x600 or 1200x500 JPG/WebP</small>
+            </div>
+            <div class="form-group">
+              <label>Or Image URL</label>
+              <input type="url" id="bottomBanner1Url" class="form-control" placeholder="https://..." value="images/hero2.jpg" oninput="previewBottomBannerUrl(this.value, 1)">
+            </div>
+          </div>
+
+          <div class="admin-grid-2">
+            <div class="form-group">
+              <label>Click / Target Link</label>
+              <input type="text" id="bottomBanner1Link" class="form-control" value="ethnic.html" placeholder="e.g. ethnic.html">
+            </div>
+            <div class="form-group">
+              <label>CTA Button Text</label>
+              <input type="text" id="bottomBanner1Cta" class="form-control" value="EXPLORE COLLECTION →">
+            </div>
+          </div>
+        </div>
+
+        <!-- BANNER 2 (LOWER) -->
+        <div style="background: #fbfbfb; border: 1px solid var(--border-medium); border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h4 style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: var(--dark-brown); margin: 0;">BOTTOM BANNER 2 (LOWER BANNER)</h4>
+            <span style="font-size: 0.75rem; background: var(--gold-accent); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 700;">POSITION #2</span>
+          </div>
+
+          <!-- Preview 2 -->
+          <div style="height: 140px; border-radius: 6px; overflow: hidden; background: #111; margin-bottom: 14px; position: relative; border: 1px solid #ddd;">
+            <img id="adminBottomBannerPreview2" src="images/hero1.jpg" alt="Preview 2" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; bottom: 8px; left: 12px; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 4px; color: #fff; font-size: 12px; font-weight: 600;" id="adminBottomBannerOverlayTitle2">
+              FINE TEXTILES: LUXURY ITALIAN &amp; ENGLISH SUITING FABRICS
+            </div>
+          </div>
+
+          <div class="admin-grid-2">
+            <div class="form-group">
+              <label>Banner 2 Headline Title *</label>
+              <input type="text" id="bottomBanner2Title" class="form-control" required placeholder="e.g. LUXURY ITALIAN &amp; ENGLISH SUITING FABRICS" value="LUXURY ITALIAN &amp; ENGLISH SUITING FABRICS" oninput="updateBottomBanner2PreviewTitle()">
+            </div>
+            <div class="form-group">
+              <label>Banner 2 Badge / Pill Text</label>
+              <input type="text" id="bottomBanner2Badge" class="form-control" placeholder="e.g. FINE TEXTILES" value="FINE TEXTILES" oninput="updateBottomBanner2PreviewTitle()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Banner 2 Subtitle / Description</label>
+            <textarea id="bottomBanner2Sub" class="form-control" rows="2" placeholder="e.g. Master tailor cut lengths in pure wool, linen, cashmeres & fine twill.">Master tailor cut lengths in pure wool, linen, cashmeres &amp; fine twill.</textarea>
+          </div>
+
+          <div class="admin-grid-2">
+            <div class="form-group">
+              <label>Upload Banner 2 Image</label>
+              <input type="file" id="bottomBanner2File" class="form-control" accept="image/*" onchange="previewBottomBannerFile(this, 2)">
+              <small style="color: var(--text-muted); font-size: 11px; display: block; margin-top: 4px;">Recommended: 1920x600 or 1200x500 JPG/WebP</small>
+            </div>
+            <div class="form-group">
+              <label>Or Image URL</label>
+              <input type="url" id="bottomBanner2Url" class="form-control" placeholder="https://..." value="images/hero1.jpg" oninput="previewBottomBannerUrl(this.value, 2)">
+            </div>
+          </div>
+
+          <div class="admin-grid-2">
+            <div class="form-group">
+              <label>Click / Target Link</label>
+              <input type="text" id="bottomBanner2Link" class="form-control" value="suiting.html" placeholder="e.g. suiting.html">
+            </div>
+            <div class="form-group">
+              <label>CTA Button Text</label>
+              <input type="text" id="bottomBanner2Cta" class="form-control" value="SHOP FABRICS →">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="saveBottomBannersBtn" class="btn-admin btn-admin-success" style="width: 100%; padding: 13px; font-weight: 800; font-size: 0.9rem;">
+          SAVE &amp; PUBLISH BOTTOM PROMO BANNERS
+        </button>
+      </form>
+    </div>
+
   </main>
 
   <!-- FIXED MOBILE BOTTOM TASKBAR -->
@@ -739,10 +867,246 @@
       }
     });
 
+    
+    let activeBottomBannerUrl1 = 'images/hero2.jpg';
+    let activeBottomBannerUrl2 = 'images/hero1.jpg';
+
+    function updateBottomBanner1PreviewTitle() {
+      const b = document.getElementById('bottomBanner1Badge').value.trim();
+      const t = document.getElementById('bottomBanner1Title').value.trim();
+      const el = document.getElementById('adminBottomBannerOverlayTitle1');
+      if (el) el.textContent = (b ? b + ': ' : '') + (t || 'Banner 1 Headline');
+    }
+    function updateBottomBanner2PreviewTitle() {
+      const b = document.getElementById('bottomBanner2Badge').value.trim();
+      const t = document.getElementById('bottomBanner2Title').value.trim();
+      const el = document.getElementById('adminBottomBannerOverlayTitle2');
+      if (el) el.textContent = (b ? b + ': ' : '') + (t || 'Banner 2 Headline');
+    }
+
+    function previewBottomBannerUrl(url, idx) {
+      if (!url) return;
+      const img = document.getElementById('adminBottomBannerPreview' + idx);
+      if (img) img.src = url;
+      if (idx === 1) activeBottomBannerUrl1 = url;
+      if (idx === 2) activeBottomBannerUrl2 = url;
+    }
+
+    function previewBottomBannerFile(input, idx) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const localBlobUrl = URL.createObjectURL(file);
+        const img = document.getElementById('adminBottomBannerPreview' + idx);
+        if (img) img.src = localBlobUrl;
+      }
+    }
+
+    async function loadBottomBannersSettings() {
+      const client = window.urSbClient || window.adminSupabase || (window.supabase ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
+      if (!client) return;
+
+      try {
+        const { data: bList } = await client
+          .from('banners')
+          .select('*')
+          .eq('section', 'bottom')
+          .order('display_order', { ascending: true });
+
+        if (bList && bList.length > 0) {
+          const b1 = bList.find(b => b.display_order === 1) || bList[0];
+          const b2 = bList.find(b => b.display_order === 2) || (bList.length > 1 ? bList[1] : null);
+
+          if (b1) {
+            if (b1.title) document.getElementById('bottomBanner1Title').value = b1.title;
+            if (b1.badge_text) document.getElementById('bottomBanner1Badge').value = b1.badge_text;
+            if (b1.subtitle) document.getElementById('bottomBanner1Sub').value = b1.subtitle;
+            if (b1.link_url) document.getElementById('bottomBanner1Link').value = b1.link_url;
+            if (b1.image_url) {
+              document.getElementById('bottomBanner1Url').value = b1.image_url;
+              activeBottomBannerUrl1 = b1.image_url;
+              const preview = document.getElementById('adminBottomBannerPreview1');
+              if (preview) preview.src = b1.image_url;
+            }
+            updateBottomBanner1PreviewTitle();
+          }
+
+          if (b2) {
+            if (b2.title) document.getElementById('bottomBanner2Title').value = b2.title;
+            if (b2.badge_text) document.getElementById('bottomBanner2Badge').value = b2.badge_text;
+            if (b2.subtitle) document.getElementById('bottomBanner2Sub').value = b2.subtitle;
+            if (b2.link_url) document.getElementById('bottomBanner2Link').value = b2.link_url;
+            if (b2.image_url) {
+              document.getElementById('bottomBanner2Url').value = b2.image_url;
+              activeBottomBannerUrl2 = b2.image_url;
+              const preview = document.getElementById('adminBottomBannerPreview2');
+              if (preview) preview.src = b2.image_url;
+            }
+            updateBottomBanner2PreviewTitle();
+          }
+        }
+      } catch(err) {
+        console.warn('loadBottomBannersSettings notice:', err);
+      }
+    }
+
+    document.getElementById('bottomBannersForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const saveBtn = document.getElementById('saveBottomBannersBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'SAVING PROMO BANNERS...';
+
+      try {
+        const client = window.urSbClient || window.adminSupabase || (window.supabase ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
+        if (!client) throw new Error('Database client not connected.');
+
+        // Banner 1 data
+        const title1 = document.getElementById('bottomBanner1Title').value.trim();
+        const badge1 = document.getElementById('bottomBanner1Badge').value.trim();
+        const sub1 = document.getElementById('bottomBanner1Sub').value.trim();
+        const link1 = document.getElementById('bottomBanner1Link').value.trim() || 'ethnic.html';
+        let img1 = document.getElementById('bottomBanner1Url').value.trim() || activeBottomBannerUrl1;
+
+        // Check if file selected for Banner 1
+        const fileInput1 = document.getElementById('bottomBanner1File');
+        if (fileInput1.files && fileInput1.files.length > 0) {
+          saveBtn.textContent = 'UPLOADING BANNER 1 IMAGE...';
+          const up1 = await window.uploadFileToStorage(fileInput1.files[0], 'banner-images', 'bottom-banners');
+          if (up1) {
+            img1 = up1;
+            activeBottomBannerUrl1 = up1;
+            document.getElementById('bottomBanner1Url').value = up1;
+          }
+        }
+
+        // Banner 2 data
+        const title2 = document.getElementById('bottomBanner2Title').value.trim();
+        const badge2 = document.getElementById('bottomBanner2Badge').value.trim();
+        const sub2 = document.getElementById('bottomBanner2Sub').value.trim();
+        const link2 = document.getElementById('bottomBanner2Link').value.trim() || 'suiting.html';
+        let img2 = document.getElementById('bottomBanner2Url').value.trim() || activeBottomBannerUrl2;
+
+        // Check if file selected for Banner 2
+        const fileInput2 = document.getElementById('bottomBanner2File');
+        if (fileInput2.files && fileInput2.files.length > 0) {
+          saveBtn.textContent = 'UPLOADING BANNER 2 IMAGE...';
+          const up2 = await window.uploadFileToStorage(fileInput2.files[0], 'banner-images', 'bottom-banners');
+          if (up2) {
+            img2 = up2;
+            activeBottomBannerUrl2 = up2;
+            document.getElementById('bottomBanner2Url').value = up2;
+          }
+        }
+
+        saveBtn.textContent = 'SAVING TO DATABASE...';
+        const nowIso = new Date().toISOString();
+
+        // 1. Update banners table (order 1)
+        try {
+          const { data: existingB1 } = await client
+            .from('banners')
+            .select('id')
+            .eq('section', 'bottom')
+            .eq('display_order', 1)
+            .limit(1);
+
+          if (existingB1 && existingB1.length > 0) {
+            await client.from('banners').update({
+              title: title1,
+              subtitle: sub1,
+              badge_text: badge1,
+              link_url: link1,
+              image_url: img1,
+              mobile_image_url: img1,
+              is_active: true,
+              updated_at: nowIso
+            }).eq('id', existingB1[0].id);
+          } else {
+            await client.from('banners').insert({
+              title: title1,
+              subtitle: sub1,
+              badge_text: badge1,
+              link_url: link1,
+              image_url: img1,
+              mobile_image_url: img1,
+              display_order: 1,
+              section: 'bottom',
+              is_active: true
+            });
+          }
+        } catch(b1Err) { console.warn('Banner 1 save note:', b1Err); }
+
+        // 2. Update banners table (order 2)
+        try {
+          const { data: existingB2 } = await client
+            .from('banners')
+            .select('id')
+            .eq('section', 'bottom')
+            .eq('display_order', 2)
+            .limit(1);
+
+          if (existingB2 && existingB2.length > 0) {
+            await client.from('banners').update({
+              title: title2,
+              subtitle: sub2,
+              badge_text: badge2,
+              link_url: link2,
+              image_url: img2,
+              mobile_image_url: img2,
+              is_active: true,
+              updated_at: nowIso
+            }).eq('id', existingB2[0].id);
+          } else {
+            await client.from('banners').insert({
+              title: title2,
+              subtitle: sub2,
+              badge_text: badge2,
+              link_url: link2,
+              image_url: img2,
+              mobile_image_url: img2,
+              display_order: 2,
+              section: 'bottom',
+              is_active: true
+            });
+          }
+        } catch(b2Err) { console.warn('Banner 2 save note:', b2Err); }
+
+        // 3. Update store_settings
+        try {
+          await client.from('store_settings').update({
+            bottom_banner_1_title: title1,
+            bottom_banner_1_subtitle: sub1,
+            bottom_banner_1_badge_text: badge1,
+            bottom_banner_1_link_url: link1,
+            bottom_banner_1_image_url: img1,
+            bottom_banner_2_title: title2,
+            bottom_banner_2_subtitle: sub2,
+            bottom_banner_2_badge_text: badge2,
+            bottom_banner_2_link_url: link2,
+            bottom_banner_2_image_url: img2,
+            updated_at: nowIso
+          }).neq('id', '00000000-0000-0000-0000-000000000000');
+        } catch(sErr) { console.warn('store_settings bottom banners update notice:', sErr); }
+
+        if (window.showToast) {
+          window.showToast('Homepage Dual Bottom Promo Banners saved & published successfully!', 'success');
+        } else {
+          alert('Homepage Dual Bottom Promo Banners saved & published successfully!');
+        }
+      } catch(err) {
+        console.error('Save bottom promo banners error:', err);
+        alert('Error saving promo banners: ' + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'SAVE & PUBLISH BOTTOM PROMO BANNERS';
+      }
+    });
+
+
     document.addEventListener('DOMContentLoaded', function() {
       loadVideoShowcaseSettings();
+      loadBottomBannersSettings();
       loadBanners();
-      document.addEventListener('adminSupabaseReady', () => { loadBanners(); loadVideoShowcaseSettings(); });
+      document.addEventListener('adminSupabaseReady', () => { loadBanners(); loadVideoShowcaseSettings(); loadBottomBannersSettings(); });
     });
   </script>
 </body>
